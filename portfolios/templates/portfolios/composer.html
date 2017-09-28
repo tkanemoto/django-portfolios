@@ -1,0 +1,514 @@
+{% load static from staticfiles %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,shrink-to-fit=no">
+    <meta name="description" content="{{ object.description }}">
+    <meta name="author" content="{{ object.owner.get_full_name }}">
+    <meta name="keywords" content="{{ object.keywords }}">
+
+    <title>{{ object.title }} - {{ object.subtitle }}</title>
+
+    <link rel="canonical" href="https://www.{{ object.slug }}.com/">
+
+    {% load compress %}
+    {% compress css %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- 3rd party CSS -->
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/owl-carousel/owl.theme.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/owl-carousel/owl.transitions.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/magnific-popup/magnific-popup.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/animate.css/animate.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'device-mockups/device-mockups.min.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'css/creative.css' %}" rel="stylesheet" type="text/css">
+    <!-- Temporary navbar container fix -->
+    <style>
+    .navbar-toggler {
+        z-index: 1;
+    }
+
+    @media (max-width: 576px) {
+        nav > .container {
+            width: 100%;
+        }
+    }
+    </style>
+    {% endcompress %}
+
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "MusicGroup",
+      "url": "https://www.{{ object.slug }}.com/",
+      "image": [
+        "{% if object.mugshot %}{{ object.mugshot.url }}{% endif %}"
+       ],
+      "name": "{{ object.title }}",
+      "sameAs": "https://{{ object.slug }}.com",
+      "description": "{{ object.description }}",
+      "potentialAction": {
+        "@type": "ListenAction",
+        "target": [
+          {
+            "@type": "EntryPoint",
+            "urlTemplate": "{{ object.get_embeddedcontent_url }}",
+            "actionPlatform": [
+              "http://schema.org/DesktopWebPlatform",
+              "http://schema.org/IOSPlatform",
+              "http://schema.org/AndroidPlatform"
+            ],
+            "inLanguage": "USD"
+          }
+        ],
+        "expectsAcceptanceOf": {
+          "@type": "Offer",
+          "eligibleRegion": [
+            {
+              "@type": "Country",
+              "name": "GB"
+            },
+            {
+              "@type": "Country",
+              "name": "US"
+            },
+            {
+              "@type": "Country",
+              "name": "FI"
+            },
+            {
+              "@type": "Country",
+              "name": "JP"
+            }
+          ]
+        }
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "{{ object.owner.get_full_name }}",
+      "url": "https://www.{{ object.slug }}.com/",
+      "sameAs": [{% for link in object.socialmedialink_set.all %}"{{ link.url }}"{% if not forloop.last %},{% endif %}{% endfor %}]
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,600,500,700,800,900' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav class="navbar fixed-top navbar-toggleable-md navbar-inverse navbar-expanded" id="mainNav">
+    <div class="container">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu <i class="fa fa-bars"></i>
+        </button>
+        <a class="navbar-brand page-scroll" href="#page-top">
+            <!--<img class="img-fluid" src="{% static 'img/agency/logo.svg' %}" alt="">-->
+            {{ object.title }}
+        </a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#news">News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#music">Music</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#work">Credits</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#testimonials">Testimonials</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% if object.showreel %}
+<!-- Masthead -->
+<header class="masthead video">
+    <div class="overlay"></div>
+    <div class="container h-100">
+        <div class="row h-100">
+            <div class="col-12 my-auto text-center text-white">
+                <!--<img class="masthead-img img-fluid mb-3" src="{% static 'img/agency/profile.svg' %}" alt="">-->
+                <div class="masthead-title">{{ object.title }}</div>
+                <hr class="colored">
+                <div class="masthead-subtitle">{{ object.subtitle }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-down">
+        <a class="btn page-scroll" href="#about">
+            <i class="fa fa-angle-down fa-fw"></i>
+        </a>
+    </div>
+    <div class="video-controls">
+        <!--
+        <a class="btn" href="#show-reel-modal" data-toggle="modal">
+            <i class="fa fa-arrows-alt"></i>
+        </a>
+        -->
+        <a class="btn audio-toggle" href="javascript:toggleMuted()">
+            <i class="fa fa-volume-off fa-fw"></i><span class="desc ml-2">Sound off</span>
+        </a>
+    </div>
+</header>
+{% endif %}
+
+<!-- About Section -->
+<section class="page-section" id="about">
+    <div class="container">
+        <div class="wow fadeIn text-center">
+            {% if object.showreel %}
+            <h1>About</h1>
+            {% else %}
+            <h1>{{ object.title }}</h1>
+            <hr class="colored">
+            <p>{{ object.subtitle }}</p>
+            {% endif %}
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <img class="rounded-circle img-fluid img-profile" src="{% if object.mugshot %}{{ object.mugshot.url }}{% else %}https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?f=y&d=mm{% endif %}" alt="Profile picture">
+                </div>
+                <div class="col-md-8 text-left mt-4">
+                    {{ object.about }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if object.quote %}
+<section class="call-to-action" {% if object.quote_background %}style="background-image: url('{{ object.quote_background.url }}');"{% endif %}>
+    <div class="container wow fadeIn">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <span class="quote">
+                    ‘{{ object.quote | safe }}’
+                    <span class="small">{{ object.quote_citation }}</span>
+                </span>
+                <hr class="colored">
+                <a class="btn btn-primary" href="#show-reel-modal" data-toggle="modal">Showreel</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="page-section news" id="news">
+    <div class="container">
+        <div class="text-center wow fadeIn">
+            <h2>News</h2>
+            <hr class="colored">
+            <p class="mb-0">Here's what I'm up to at the moment.</p>
+        </div>
+        <div class="row">
+            <div class="posts col-lg-10 offset-lg-1 mt-4">
+                {% for post in object.post_set.all %}
+                <div class="post-item media pb-3 mb-3 row">
+
+                    {% if post.embedded_content %}
+                    <div class="embed-responsive embed-responsive-16by9 d-flex mr-3 media-item col-sm-3">
+                        {{ post.embedded_content | safe }}
+                    </div>
+                    {% elif post.image %}
+                    <img class="img-fluid d-flex mr-3 media-item col-sm-3" src="{{ post.image.url }}" alt="">
+                    {% endif %}
+
+                    <div class="media-body col-sm-9">
+                        <h5 class="post-title mt-0">{{ post.title }}</h5>
+                        <div class="post-text">{{ post.text | safe }}</div>
+                        <div class="post-date">Posted on <time>{{ post.date }}</time></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Music Section -->
+<section class="page-section music" id="music">
+    <div class="container">
+        <div class="text-center wow fadeIn">
+            <h2>Music</h2>
+            <hr class="colored">
+            <p class="mb-0"></p>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-10 offset-md-1">
+                {% for content in object.embeddedcontent_set.all %}
+                <div class="item">
+                    {{ content.content | safe }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Carousel Heading -->
+<section class="page-section" id="work">
+    <div class="container text-center wow fadeIn">
+        <h2>Credits</h2>
+        <hr class="colored">
+        <p>Here are some examples of my work.</p>
+    </div>
+</section>
+
+<!-- Portfolio Carousel -->
+<div class="portfolio-carousel wow fadeIn owl-carousel owl-theme">
+
+    {% for client in object.featured_clients %}{% with client.embed_url as video_url %}
+    <div class="item" {% if client.background %}style="background-image: url('{{ client.background.url }}')"{% endif %}>
+        <div class="overlay"></div>
+        <div class="container-fluid">
+            <div class="row h-100">
+                <div class="col-md-{{ video_url | yesno:'6,8' }} push-md-{{ video_url | yesno:'6,2' }} my-auto">
+                    <div class="project-details">
+                        <div class="actions">
+                            <a class="btn btn-xs btn-default" href="{{ client.link }}" target="_blank">Website</a>
+                        </div>
+                        <span class="project-name">{{ client.name }}</span>
+                        <span class="project-description">{{ client.description | safe }}</span>
+                        <hr class="colored">
+                        <div class="project-list">
+                            {% for project in client.project_set.all %}
+                            <div class="project-item">
+                                <div class="date-label"><i class="fa fa-film"></i><div class="year">{{ project.date }}</div></div>
+                                <h3 class="title">{{ project.name }}</h3>
+                                <ul class="meta-list list-inline">
+                                    <li class="list-inline-item"><i class="fa fa-tags"></i> {{ project.category }}</li>
+                                    <li class="list-inline-item time"><i class="fa fa-user"></i> {{ project.roles.all | join:' / ' }}</li>
+                                </ul>
+                                {% if project.url %}
+                                <div class="actions">
+                                    <a class="btn btn-xs btn-default" href="{{ project.url }}" target="_blank">Link</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% if video_url %}
+                <div class="col-md-6 pull-md-6 hidden-xs my-auto">
+                    <div class="device-container">
+                        <div class="device-mockup samsung_tv landscape black">
+                            <div class="device">
+                                <div class="screen">
+                                    <iframe src="{{ video_url }}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endwith %}{% endfor %}
+
+</div>
+
+<!-- Portfolio Grid Section -->
+<section class="page-section">
+    <div class="container text-center wow fadeIn">
+        <h2>Portfolio</h2>
+        <hr class="colored">
+        <p>Here are some other projects that I've worked on.</p>
+        <div class="controls mt-3">
+            <button type="button" class="control btn btn-secondary btn-sm mx-2 mb-4" data-filter="all">All</button>
+            {% for product in object.products %}
+            <button type="button" class="control btn btn-secondary btn-sm mx-2 mb-4" data-filter=".{{ product | lower }}">{{ product }}</button>
+            {% endfor %}
+        </div>
+        <div class="portfolio-grid clearfix" id="portfolioList">
+
+            {% for client in object.clients.all %}{% with forloop.counter as counter %}
+            <div class="grid-item mix {% if counter > object.number_of_featured_clients %}default{% endif %} {{ client.products | join:' ' | lower }}" href="{{ client.video_url }}" title="{{ client.name }}">
+                <div class="portfolio-wrapper">
+                    <div class="project-details">
+                        <div class="project-title" {% if client.background %}style="background-image: url('{{ client.background.url }}')"{% endif %}>
+                            <div class="overlay">
+                                <span class="project-name">{{ client.name }}</span>
+                                <span class="project-description">{{ client.description | safe }}</span>
+                            </div>
+                        </div>
+                        <div class="caption">
+                            <div class="caption-text">
+                                <div class="project-list">
+                                    {% for project in client.project_set.all %}
+                                    <div class="project-item mix {% if counter > object.number_of_featured_clients %}default{% endif %} {{ project.products | join:' ' | lower }}">
+                                        <div class="date-label"><i class="fa fa-film"></i><div class="year">{{ project.date }}</div></div>
+                                        <h3 class="title">{{ project.name }}</h3>
+                                        <ul class="meta-list list-inline">
+                                            <li class="list-inline-item"><i class="fa fa-tags"></i> {{ project.category }}</li>
+                                            <li class="list-inline-item"><i class="fa fa-user"></i> {{ project.roles.all | join:' / ' }}</li>
+                                        </ul>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="caption-bg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}{% endfor %}
+
+        </div>
+    </div>
+</section>
+
+<!-- Testomonials Section -->
+<section class="page-section testimonials" id="testimonials">
+    <div class="container wow fadeIn">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="testimonials-carousel owl-carousel owl-theme">
+                    {% for testimonial in object.testimonial_set.all %}
+                    <div class="item mb-4">
+                        <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
+                        <hr class="colored">
+                        <p>{{ testimonial.body }}</p>
+                        <div class="testimonial-img">
+                            <img class="rounded-circle img-fluid" src="{% if testimonial.author.mugshot %}{{ testimonial.author.mugshot.url }}{% else %}https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?f=y&d=mm{% endif %}" alt="">
+                        </div>
+                        <div class="testimonial-author">
+                            <span class="name">{{ testimonial.author.name }}</span>
+                            <p class="small">{{ testimonial.author.description }}</p>
+                            <div class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" {% if object.footer_background %}style="background-image: url('{{ object.footer_background.url }}')"{% endif %} id="contact">
+    <div class="container text-center">
+        <div class="text-center">
+            <h2>Contact</h2>
+            <hr class="colored">
+        </div>
+        <div class="row">
+            {% if object.phone %}
+            <div class="col-md-4 footer-contact-details">
+                <h4><i class="fa fa-phone"></i> Call</h4>
+                <p>{{ object.phone }}</p>
+            </div>
+            {% else %}<div class="col-md-2"></div>
+            {% endif %}
+            {% if object.address %}
+            <div class="col-md-4 footer-contact-details">
+                <h4><i class="fa fa-map-marker"></i> Visit</h4>
+                <p>{{ object.address | linebreaksbr }}</p>
+            </div>
+            {% else %}<div class="col-md-2"></div>
+            {% endif %}
+            {% if object.email %}
+            <div class="col-md-4 footer-contact-details">
+                <h4><i class="fa fa-envelope"></i> Email</h4>
+                <p><a href="mailto:{{ object.email }}">{{ object.email }}</a>
+                </p>
+            </div>
+            {% else %}<div class="col-md-2"></div>
+            {% endif %}
+        </div>
+        <div class="row footer-social">
+            <div class="col-lg-12">
+                <ul class="list-inline">
+                    {% for link in object.socialmedialink_set.all %}
+                    <li class="list-inline-item">
+                        <a href="{{ link.url }}" target="_blank"><i class="fa fa-{{ link.kind }} fa-fw fa-2x"></i></a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <p class="copyright">&copy; {{ object.copyright }} {{ object.owner.get_full_name }} &mdash; website by <a href="https://tkanemoto.com/" target="_blank">Takeshi Kanemoto</a></p>
+    </div>
+</footer>
+
+{% if object.showreel %}
+<div class="portfolio-modal modal fade" id="show-reel-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="embed-responsive embed-responsive-16by9">
+                            <video style="width:100%;height:100%" controls>
+                                <source src="{{ object.showreel.url }}" type="video/mp4">
+                            </video>
+                            </div>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% compress js %}
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/tether/tether.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+<!-- Plugin JavaScript -->
+<script src="{% static 'vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'vendor/owl-carousel/owl.carousel.js' %}"></script>
+<script src="{% static 'vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'vendor/vide/jquery.vide.min.js' %}"></script>
+<script src="{% static 'vendor/mixitup/mixitup.min.js' %}"></script>
+<script src="{% static 'vendor/wowjs/wow.min.js' %}"></script>
+
+<!-- Custom scripts for this theme -->
+<script src="{% static 'js/creative.js' %}"></script>
+<script src="{% static 'js/creative-mixitup.js' %}"></script>
+{% endcompress %}
+
+</body>
+
+</html>
