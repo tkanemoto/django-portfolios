@@ -234,7 +234,7 @@ class Post(models.Model):
 class Member(OrderedModel):
     name = models.CharField('name', max_length=100, help_text='Name of the member')
     roles = models.CharField('roles', max_length=60)
-    description = models.TextField('description', blank=True, null=True, max_length=200, help_text='Description')
+    description = models.CharField('description', blank=True, null=True, max_length=200, help_text='Description')
     mugshot = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER, help_text='Profile picture')
     page = models.ForeignKey('Page')
     order_with_respect_to = 'page'
