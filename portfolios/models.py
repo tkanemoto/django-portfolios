@@ -183,7 +183,7 @@ class Project(OrderedModel):
 class Testimonial(OrderedModel):
     author = models.ForeignKey('Client')
     title = models.CharField('title', max_length=200)
-    body = models.TextField('body', blank=True)
+    body = models.TextField('body', max_length=400, null=True, blank=True)
     page = models.ForeignKey('Page', null=True)
     order_with_respect_to = 'page'
 
@@ -235,7 +235,7 @@ class Post(models.Model):
 class Member(OrderedModel):
     name = models.CharField('name', max_length=100, help_text='Name of the member')
     roles = models.CharField('roles', max_length=60)
-    description = models.CharField('description', blank=True, null=True, max_length=200, help_text='Description')
+    description = models.TextField('description', blank=True, null=True, max_length=400, help_text='Descript or bio')
     mugshot = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER, help_text='Profile picture')
     page = models.ForeignKey('Page')
     order_with_respect_to = 'page'

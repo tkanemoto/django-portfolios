@@ -7,12 +7,26 @@ from ordered_model.admin import OrderedTabularInline, OrderedModelAdmin
 from .models import *
 
 
-class PostInline(admin.StackedInline):
+class CustomTextAreaSizeMixin(object):
+    custom_textarea_rows = 4
+    custom_textarea_cols = 85
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        field = super(CustomTextAreaSizeMixin, self).formfield_for_dbfield(db_field, **kwargs)
+        if isinstance(db_field, models.TextField):
+            field.widget.attrs.update({
+                'cols': self.custom_textarea_cols,
+                'rows': self.custom_textarea_rows,
+                'class': ''})
+        return field
+
+
+class PostInline(CustomTextAreaSizeMixin, admin.StackedInline):
     model = Post
     extra = 1
 
 
-class EmbeddedContentInline(OrderedTabularInline):
+class EmbeddedContentInline(CustomTextAreaSizeMixin, OrderedTabularInline):
     model = EmbeddedContent
     fields = ('content', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
@@ -20,7 +34,7 @@ class EmbeddedContentInline(OrderedTabularInline):
     ordering = ('order',)
 
 
-class ProjectInline(OrderedTabularInline):
+class ProjectInline(CustomTextAreaSizeMixin, OrderedTabularInline):
     model = Project
     fields = ('client', 'name', 'category', 'roles', 'date', 'url', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
@@ -60,12 +74,14 @@ class ClientAdmin(OrderedModelAdmin):
         return ['owner']
 
 
-class TestimonialInline(OrderedTabularInline):
+class TestimonialInline(CustomTextAreaSizeMixin, OrderedTabularInline):
     model = Testimonial
     fields = ('author', 'title', 'body', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
     extra = 1
     ordering = ('order',)
+    custom_textarea_rows = 2
+    custom_textarea_cols = 60
 
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
         if db_field.name == 'author':
@@ -82,15 +98,17 @@ class SocialMediaLinkInline(OrderedTabularInline):
     ordering = ('order',)
 
 
-class MemberInline(OrderedTabularInline):
+class MemberInline(CustomTextAreaSizeMixin, OrderedTabularInline):
     model = Member
     fields = ('name', 'roles', 'description', 'mugshot', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
     extra = 1
     ordering = ('order',)
+    custom_textarea_rows = 4
+    custom_textarea_cols = 60
 
 
-class EventInline(admin.StackedInline):
+class EventInline(CustomTextAreaSizeMixin, admin.StackedInline):
     model = Event
     extra = 1
 
@@ -124,9 +142,9 @@ class PageAdmin(admin.ModelAdmin):
             return []
         if request.user.is_superuser:
             return []
-        fs = ['owner', 'keywords', 'template', 'domain']
+        fs = ['slug', 'owner', 'keywords', 'template', 'domain']
         if obj.template == 'band':
-            fs += ['clients', 'number_of_featured_clients', 'quote', 'quote_citation', 'quote_background']
+            fs += ['showreel', 'clients', 'number_of_featured_clients', 'quote', 'quote_citation', 'quote_background', 'address']
         return fs
 
     def get_field_queryset(self, db, db_field, request):
