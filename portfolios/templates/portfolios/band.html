@@ -247,14 +247,14 @@
                         </div>
                         <div class="gig-actions">
                             {% if event.description %}
-                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ forloop.counter }}" aria-expanded="false" aria-controls="info-extra-{{ forloop.counter }}" >More info</a>
+                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
                             {% endif %}
                             {% if event.link %}
                             <a class="btn btn-xs btn-default" href="{{ event.link }}" target="_blank">{{ event.link_text | default:'Link' }}</a>
                             {% endif %}
                         </div>
                         {% if event.description %}
-                        <div id="info-extra-{{ forloop.counter }}" class="collapse info-extra">
+                        <div id="info-extra-{{ event.id }}" class="collapse info-extra">
                             {{ event.description | safe }}
                         </div>
                         {% endif %}
@@ -300,14 +300,14 @@
                         </div>
                         <div class="gig-actions">
                             {% if event.description %}
-                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ forloop.counter }}" aria-expanded="false" aria-controls="info-extra-{{ forloop.counter }}" >More info</a>
+                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
                             {% endif %}
                             {% if event.link %}
                             <a class="btn btn-xs btn-default" href="{{ event.link }}" target="_blank">{{ event.link_text | default:'Link' }}</a>
                             {% endif %}
                         </div>
                         {% if event.description %}
-                        <div id="info-extra-{{ forloop.counter }}" class="collapse info-extra">
+                        <div id="info-extra-{{ event.id }}" class="collapse info-extra">
                             {{ event.description | safe }}
                         </div>
                         {% endif %}
