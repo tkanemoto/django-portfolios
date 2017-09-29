@@ -22,7 +22,7 @@
   min-height: 40px;
 }
 .about-section .member-desc {
-  color: #4f545e;
+  color: #8f949e;
 }
 .about-section .member-profile {
   position: relative;
@@ -118,7 +118,7 @@
   margin-right: 0;
 }
 .gigs-section .info-extra {
-  color: #4f545e;
+  color: #8f949e;
   font-size: 16px;
 }
 .gigs-section .gigs-contact {
@@ -131,7 +131,7 @@
 }
 .gigs-section .gigs-contact .intro {
   font-size: 16px;
-  color: #4f545e;
+  color: #8f949e;
   max-width: 800px;
 }
 .gigs-section .gigs-contact .btn {
