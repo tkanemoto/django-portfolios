@@ -204,6 +204,7 @@ class SocialMediaLink(OrderedModel):
         ('vevo', 'Vevo'),
         ('itunes', 'iTunes'),
         ('lastfm', 'LastFM'),
+        ('tumblr', 'Tumblr'),
     )
     kind = models.CharField('kind', max_length=20, choices=SERVICES)
     url = models.URLField('URL')
