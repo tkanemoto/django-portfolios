@@ -107,7 +107,7 @@
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner" role="listbox">
                             {% for post in object.post_set.all %}
-                            <div class="item active">
+                            <div class="item {{ forloop.first|yesno:'active,' }}">
                                 <div class="media-holder">
                                     <div class="media-thumb">
                                         {% if post.embedded_content %}
