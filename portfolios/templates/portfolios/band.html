@@ -170,6 +170,9 @@
                         <div class="member-desc">{{ member.description }}</div>
                     </div>
                 </div>
+                {% if forloop.counter|divisibleby:2 %}<div class="clearfix visible-xs"></div>{% endif %}
+                {% if forloop.counter|divisibleby:3 %}<div class="clearfix visible-md"></div>{% endif %}
+                {% if forloop.counter|divisibleby:4 %}<div class="clearfix visible-lg"></div>{% endif %}
                 {% endfor %}
             </div>
         </div>
