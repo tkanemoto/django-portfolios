@@ -67,6 +67,12 @@ class TestimonialInline(OrderedTabularInline):
     extra = 1
     ordering = ('order',)
 
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        if db_field.name == 'author':
+            if not request.user.is_superuser:
+                kwargs['queryset'] = db_field.remote_field.model._default_manager.filter(owner=request.user)
+        return super(TestimonialInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class SocialMediaLinkInline(OrderedTabularInline):
     model = SocialMediaLink
@@ -118,7 +124,10 @@ class PageAdmin(admin.ModelAdmin):
             return []
         if request.user.is_superuser:
             return []
-        return ['owner', 'keywords', 'template', 'domain']
+        fs = ['owner', 'keywords', 'template', 'domain']
+        if obj.template == 'band':
+            fs += ['clients', 'number_of_featured_clients', 'quote', 'quote_citation', 'quote_background']
+        return fs
 
     def get_field_queryset(self, db, db_field, request):
         """ Only show clients belonging to the owner. """
