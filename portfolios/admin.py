@@ -28,7 +28,7 @@ class CustomSizeMixin(object):
 
 
 class CollapsedMixin(object):
-    classes = ['collapse', 'wide']
+    classes = ['collapse']
 
 
 class PostInline(CollapsedMixin, CustomSizeMixin, admin.StackedInline):
