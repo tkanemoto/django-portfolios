@@ -7,34 +7,46 @@ from ordered_model.admin import OrderedTabularInline, OrderedModelAdmin
 from .models import *
 
 
-class CustomTextAreaSizeMixin(object):
+class CustomSizeMixin(object):
     custom_textarea_rows = 4
     custom_textarea_cols = 85
+    custom_text_input_style = 'width: 20em'
 
     def formfield_for_dbfield(self, db_field, **kwargs):
-        field = super(CustomTextAreaSizeMixin, self).formfield_for_dbfield(db_field, **kwargs)
+        field = super(CustomSizeMixin, self).formfield_for_dbfield(db_field, **kwargs)
         if isinstance(db_field, models.TextField):
             field.widget.attrs.update({
                 'cols': self.custom_textarea_cols,
                 'rows': self.custom_textarea_rows,
-                'class': ''})
+                'class': '',
+            })
+        if isinstance(db_field, models.CharField):
+            field.widget.attrs.update({
+                'style': self.custom_text_input_style,
+            })
         return field
 
 
-class PostInline(CustomTextAreaSizeMixin, admin.StackedInline):
+class CollapsedMixin(object):
+    classes = ['collapse', 'wide']
+
+
+class PostInline(CollapsedMixin, CustomSizeMixin, admin.StackedInline):
     model = Post
     extra = 1
 
 
-class EmbeddedContentInline(CustomTextAreaSizeMixin, OrderedTabularInline):
+class EmbeddedContentInline(CollapsedMixin, CustomSizeMixin, OrderedTabularInline):
     model = EmbeddedContent
     fields = ('content', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
     extra = 1
     ordering = ('order',)
+    custom_textarea_rows = 4
+    custom_textarea_cols = 100
 
 
-class ProjectInline(CustomTextAreaSizeMixin, OrderedTabularInline):
+class ProjectInline(CustomSizeMixin, OrderedTabularInline):
     model = Project
     fields = ('client', 'name', 'category', 'roles', 'date', 'url', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
@@ -74,7 +86,7 @@ class ClientAdmin(OrderedModelAdmin):
         return ['owner']
 
 
-class TestimonialInline(CustomTextAreaSizeMixin, OrderedTabularInline):
+class TestimonialInline(CollapsedMixin, CustomSizeMixin, OrderedTabularInline):
     model = Testimonial
     fields = ('author', 'title', 'body', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
@@ -90,7 +102,7 @@ class TestimonialInline(CustomTextAreaSizeMixin, OrderedTabularInline):
         return super(TestimonialInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-class SocialMediaLinkInline(OrderedTabularInline):
+class SocialMediaLinkInline(CollapsedMixin, OrderedTabularInline):
     model = SocialMediaLink
     fields = ('kind', 'url', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
@@ -98,29 +110,33 @@ class SocialMediaLinkInline(OrderedTabularInline):
     ordering = ('order',)
 
 
-class MemberInline(CustomTextAreaSizeMixin, OrderedTabularInline):
+class MemberInline(CollapsedMixin, CustomSizeMixin, OrderedTabularInline):
     model = Member
     fields = ('name', 'roles', 'description', 'mugshot', 'order', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
     extra = 1
     ordering = ('order',)
     custom_textarea_rows = 4
-    custom_textarea_cols = 60
+    custom_textarea_cols = 40
+    custom_text_input_style = 'width: 10em'
 
 
-class EventInline(CustomTextAreaSizeMixin, admin.StackedInline):
+
+class EventInline(CollapsedMixin, CustomSizeMixin, admin.StackedInline):
     model = Event
     extra = 1
+    custom_textarea_rows = 4
+    custom_textarea_cols = 80
 
 
 class PageAdmin(admin.ModelAdmin):
     inlines = [
-        EventInline,
-        MemberInline,
         PostInline,
+        EventInline,
         EmbeddedContentInline,
         TestimonialInline,
         SocialMediaLinkInline,
+        MemberInline,
     ]
     filter_horizontal = ('clients',)
 
@@ -142,10 +158,30 @@ class PageAdmin(admin.ModelAdmin):
             return []
         if request.user.is_superuser:
             return []
-        fs = ['slug', 'owner', 'keywords', 'template', 'domain']
+        fs = ['slug', 'owner']
+        return fs
+
+    def get_exclude(self, request, obj=None):
+        if obj is None:
+            return []
+        if request.user.is_superuser:
+            return []
+        fs = ['keywords', 'template', 'domain']
         if obj.template == 'band':
             fs += ['showreel', 'clients', 'number_of_featured_clients', 'quote', 'quote_citation', 'quote_background', 'address']
+        if obj.template == 'composer':
+            fs += ['email_shop', 'email_booking', 'youtube_playlist', 'extra_copyright_text']
         return fs
+
+    def get_inline_instances(self, request, obj=None):
+        exclude = []
+        if obj is None:
+            pass
+        elif request.user.is_superuser:
+            pass
+        elif obj.template == 'composer':
+            exclude = [MemberInline, EventInline]
+        return [inline(self.model, self.admin_site) for inline in self.inlines if inline not in exclude]
 
     def get_field_queryset(self, db, db_field, request):
         """ Only show clients belonging to the owner. """

@@ -262,4 +262,4 @@ class Event(models.Model):
         ordering = ('-date',)
 
     def __unicode__(self):
-        return '{}'.format(self.name)
+        return '{} - {}'.format(self.name, self.date)
