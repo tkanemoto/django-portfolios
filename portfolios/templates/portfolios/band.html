@@ -14,7 +14,9 @@
 
     <link rel="canonical" href="https://{{ object.domain }}/">
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    {% if object.favicon %}
+    <link rel="shortcut icon" href="{{ object.favicon.url }}" type="image/x-icon"/>
+    {% endif %}
 
     {% load compress %}
     {% compress css %}

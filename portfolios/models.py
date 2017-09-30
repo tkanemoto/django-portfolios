@@ -48,6 +48,7 @@ class Page(models.Model):
     keywords = models.CharField(null=True, blank=True, max_length=200)
     template = models.CharField('template', max_length=20, choices=TEMPLATES)
     domain = models.CharField(max_length=40)
+    favicon = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER)
 
     def __unicode__(self):
         return '{} {}'.format(self.title, self.description if self.description is not None else '')
