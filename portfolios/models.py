@@ -36,6 +36,7 @@ class Page(models.Model):
     quote_background = models.ImageField(blank=True, null=True, upload_to=UPLOAD_FOLDER)
     clients = models.ManyToManyField('Client', blank=True, help_text='Select the clients you would like to be listed in the Credits section')
     number_of_featured_clients = models.IntegerField('number of featured clients', default=5, help_text='The number of clients to show in the big carousel')
+    media_background = models.ImageField(blank=True, null=True, upload_to=UPLOAD_FOLDER)
     footer_background = models.ImageField(blank=True, null=True, upload_to=UPLOAD_FOLDER)
     email = models.EmailField(null=True, blank=True, help_text='The email address people should contact you about this page')
     email_booking = models.EmailField(null=True, blank=True)

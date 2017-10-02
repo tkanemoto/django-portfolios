@@ -42,7 +42,7 @@ $(function() {
        playlist: $('#youtube-playlist').data('playlist')
     });
 });
-
+/*
 $(function(){
     var slidies = $(".slidie-slide");
     var $body = $('body');
@@ -54,3 +54,4 @@ $(function(){
         });
     });
 })
+*/

@@ -468,3 +468,15 @@
   -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 }
+.slidie-slide {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-attachment: scroll; }
+  @media (min-width: 1024px) {
+    .slidie-slide {
+      background-attachment: fixed; } }
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+    .slidie-slide {
+      background-attachment: scroll; } }

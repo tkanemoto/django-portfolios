@@ -181,7 +181,7 @@
     </section>
 
     <!-- Media Section -->
-    <section id="media" class="media-section container content-section text-center slidie-slide">
+    <section id="media" class="media-section container content-section text-center slidie-slide" {% if object.media_background %}style="background-image: url('{{ object.media_background.url }}')"{% endif %}>
         <h2>Media</h2>
 
         {% if object.youtube_playlist %}

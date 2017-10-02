@@ -170,7 +170,7 @@ class PageAdmin(admin.ModelAdmin):
         if obj.template == 'band':
             fs += ['showreel', 'clients', 'number_of_featured_clients', 'quote', 'quote_citation', 'quote_background', 'address']
         if obj.template == 'composer':
-            fs += ['email_shop', 'email_booking', 'youtube_playlist', 'extra_copyright_text']
+            fs += ['email_shop', 'email_booking', 'youtube_playlist', 'extra_copyright_text', 'media_background']
         return fs
 
     def get_inline_instances(self, request, obj=None):
