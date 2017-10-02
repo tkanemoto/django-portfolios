@@ -238,6 +238,8 @@
                     </div>
                     {% elif post.image %}
                     <img class="img-fluid d-flex mr-3 media-item col-sm-3" src="{{ post.image.url }}" alt="">
+                    {% else %}
+                    <div class="d-flex mr-3 media-item col-sm-3"></div>
                     {% endif %}
 
                     <div class="media-body col-sm-9">
