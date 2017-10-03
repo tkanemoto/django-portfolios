@@ -34,6 +34,8 @@ class CollapsedMixin(object):
 class PostInline(CollapsedMixin, CustomSizeMixin, admin.StackedInline):
     model = Post
     extra = 1
+    custom_textarea_rows = 6
+    custom_textarea_cols = 100
 
 
 class EmbeddedContentInline(CollapsedMixin, CustomSizeMixin, OrderedTabularInline):
