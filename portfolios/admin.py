@@ -36,6 +36,7 @@ class PostInline(CollapsedMixin, CustomSizeMixin, admin.StackedInline):
     extra = 1
     custom_textarea_rows = 6
     custom_textarea_cols = 100
+    custom_text_input_style = 'width: 55em'
 
 
 class EmbeddedContentInline(CollapsedMixin, CustomSizeMixin, OrderedTabularInline):
@@ -131,7 +132,7 @@ class EventInline(CollapsedMixin, CustomSizeMixin, admin.StackedInline):
     custom_textarea_cols = 80
 
 
-class PageAdmin(admin.ModelAdmin):
+class PageAdmin(CustomSizeMixin, admin.ModelAdmin):
     inlines = [
         PostInline,
         EventInline,
@@ -141,6 +142,7 @@ class PageAdmin(admin.ModelAdmin):
         MemberInline,
     ]
     filter_horizontal = ('clients',)
+    custom_text_input_style = 'width: 47em'
 
     def get_urls(self):
         urls = super(PageAdmin, self).get_urls()
@@ -169,10 +171,14 @@ class PageAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return []
         fs = ['keywords', 'template', 'domain']
-        if obj.template == 'band':
-            fs += ['showreel', 'clients', 'number_of_featured_clients', 'quote', 'quote_citation', 'quote_background', 'address']
-        if obj.template == 'composer':
-            fs += ['email_shop', 'email_booking', 'youtube_playlist', 'extra_copyright_text', 'media_background']
+
+        if obj.template not in ['band']:
+            fs += ['email_shop', 'email_booking', 'youtube_playlist', 'media_background']
+
+        if obj.template not in ['composer']:
+            fs += ['showreel', 'clients', 'number_of_featured_clients', 'quote', 'quote_citation', 'quote_background',
+                   'address', 'news_text']
+
         return fs
 
     def get_inline_instances(self, request, obj=None):
@@ -181,7 +187,7 @@ class PageAdmin(admin.ModelAdmin):
             pass
         elif request.user.is_superuser:
             pass
-        elif obj.template == 'composer':
+        elif obj.template not in ['band']:
             exclude = [MemberInline, EventInline]
         return [inline(self.model, self.admin_site) for inline in self.inlines if inline not in exclude]
 
