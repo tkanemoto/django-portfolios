@@ -7,13 +7,27 @@ from django.utils import timezone
 from ordered_model.models import OrderedModel
 
 
-UPLOAD_FOLDER = 'uploads/%Y-%m-%d/'
+UPLOAD_FOLDER = 'uploads/{slug}/{file}'
 RE_YOUTUBE_ANY = r'^https?://.*youtu\.?be'
 RE_YOUTUBE_FULL = r'^https?://.*youtube\.com/watch\?v=([^&]+).*$'
 RE_YOUTUBE_EMBED = r'^https?://.*youtube\.com/embed/([^?]+).*$'
 RE_YOUTUBE_SHORTENED = r'https?://youtu\.be/([^?]+).*$'
 RE_YOUTUBE_REPLACEMENT_EMBED = r'https://www.youtube.com/embed/\1'
 RE_YOUTUBE_REPLACEMENT_NORMAL = r'https://www.youtube.com/watch?v=\1'
+
+
+def get_upload_path(instance, filename):
+    slug = '%Y-%m-%d'
+    if hasattr(instance, 'slug'):
+        slug = instance.slug
+    elif hasattr(instance, 'page'):
+        slug = instance.page.slug
+    elif hasattr(instance, 'owner'):
+        if instance.owner.page_set.all().count() == 1:
+            slug = instance.owner.page_set.all()[0].slug
+        else:
+            slug = instance.owner.username
+    return UPLOAD_FOLDER.format(slug=slug, file=filename)
 
 
 class Page(models.Model):
@@ -26,18 +40,18 @@ class Page(models.Model):
     title = models.CharField('title', max_length=100, null=True, help_text='Title text to display')
     subtitle = models.CharField('subtitle', max_length=200, null=True, help_text='Text to display below the title')
     description = models.CharField('description', max_length=400, null=True, blank=True, help_text='Short description for search engines')
-    showreel = models.FileField(null=True, blank=True, upload_to=UPLOAD_FOLDER, help_text='The showreel file')
+    showreel = models.FileField(null=True, blank=True, upload_to=get_upload_path, help_text='The showreel file')
     youtube_playlist = models.CharField(max_length=100, blank=True, null=True, help_text='ID of the YouTube playlist, e.g. PLjZN_n5TZFcxOHUG3TTDbAe4Z_Qz6SuTw')
     about = models.TextField('about', max_length=1000, null=True, blank=True, help_text='Text shown in the About section')
-    about_background = models.ImageField(blank=True, null=True, upload_to=UPLOAD_FOLDER)
-    mugshot = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER, help_text='Your profile picture shown in the About section')
+    about_background = models.ImageField(blank=True, null=True, upload_to=get_upload_path)
+    mugshot = models.ImageField(null=True, blank=True, upload_to=get_upload_path, help_text='Your profile picture shown in the About section')
     quote = models.TextField('quote', max_length=1000, null=True, blank=True, help_text='Something profound')
     quote_citation = models.CharField('quote citation', max_length=20, null=True, blank=True, help_text='Some profound person')
-    quote_background = models.ImageField(blank=True, null=True, upload_to=UPLOAD_FOLDER)
+    quote_background = models.ImageField(blank=True, null=True, upload_to=get_upload_path)
     clients = models.ManyToManyField('Client', blank=True, help_text='Select the clients you would like to be listed in the Credits section')
     number_of_featured_clients = models.IntegerField('number of featured clients', default=5, help_text='The number of clients to show in the big carousel')
-    media_background = models.ImageField(blank=True, null=True, upload_to=UPLOAD_FOLDER)
-    footer_background = models.ImageField(blank=True, null=True, upload_to=UPLOAD_FOLDER)
+    media_background = models.ImageField(blank=True, null=True, upload_to=get_upload_path)
+    footer_background = models.ImageField(blank=True, null=True, upload_to=get_upload_path)
     email = models.EmailField(null=True, blank=True, help_text='The email address people should contact you about this page')
     email_booking = models.EmailField(null=True, blank=True)
     email_shop = models.EmailField(null=True, blank=True)
@@ -49,7 +63,7 @@ class Page(models.Model):
     keywords = models.CharField(null=True, blank=True, max_length=200)
     template = models.CharField('template', max_length=20, choices=TEMPLATES)
     domain = models.CharField(max_length=40)
-    favicon = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER)
+    favicon = models.ImageField(null=True, blank=True, upload_to=get_upload_path)
 
     def __unicode__(self):
         return '{} {}'.format(self.title, self.description if self.description is not None else '')
@@ -113,8 +127,8 @@ class EmbeddedContent(OrderedModel):
 class Client(OrderedModel):
     name = models.CharField('name', max_length=100, help_text='Name of the client')
     description = models.CharField('description', max_length=200, help_text='Job title or the type of organisation')
-    background = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER, help_text='Background image to display in the carousel')
-    mugshot = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER, help_text='Profile picture')
+    background = models.ImageField(null=True, blank=True, upload_to=get_upload_path, help_text='Background image to display in the carousel')
+    mugshot = models.ImageField(null=True, blank=True, upload_to=get_upload_path, help_text='Profile picture')
     showreel_url = models.URLField('showreel URL', blank=True, null=True, help_text='The embedded video URL that best represent the work you\'ve done for this client')
     link = models.URLField(null=True, blank=True, help_text='Link to this client\'s website.')
     owner = models.ForeignKey('auth.User', blank=True)
@@ -222,7 +236,7 @@ class Post(models.Model):
     text = models.TextField('text', max_length=1000)
     link = models.URLField('link', blank=True, null=True)
     link_text = models.CharField('link text', max_length=20, blank=True, null=True)
-    image = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER)
+    image = models.ImageField(null=True, blank=True, upload_to=get_upload_path)
     embedded_content = models.TextField(max_length=400, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True, editable=False)
     page = models.ForeignKey('Page')
@@ -238,7 +252,7 @@ class Member(OrderedModel):
     name = models.CharField('name', max_length=100, help_text='Name of the member')
     roles = models.CharField('roles', max_length=60)
     description = models.TextField('description', blank=True, null=True, max_length=400, help_text='Descript or bio')
-    mugshot = models.ImageField(null=True, blank=True, upload_to=UPLOAD_FOLDER, help_text='Profile picture')
+    mugshot = models.ImageField(null=True, blank=True, upload_to=get_upload_path, help_text='Profile picture')
     page = models.ForeignKey('Page')
     order_with_respect_to = 'page'
 
