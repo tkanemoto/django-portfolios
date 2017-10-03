@@ -181,15 +181,6 @@ class PageAdmin(CustomSizeMixin, admin.ModelAdmin):
 
         return fs
 
-    def get_inline_instances(self, request, obj=None):
-        exclude = []
-        if obj is None:
-            pass
-        elif request.user.is_superuser:
-            pass
-        elif obj.template not in ['band']:
-            exclude = [MemberInline, EventInline]
-        return [inline(self.model, self.admin_site) for inline in self.inlines if inline not in exclude]
 
     def get_field_queryset(self, db, db_field, request):
         """ Only show clients belonging to the owner. """
