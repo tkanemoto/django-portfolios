@@ -207,7 +207,7 @@
             </div>
         </div>
 
-        <div class="section-title text-center col-md-8 col-md-offset-2">
+        <div class="section-title text-center container">
             {% if object.testimonial_set.all.count > 2 %}{% with object.testimonial_set.all.2 as testimonial %}
             <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
             {% endwith %}{% endif %}
