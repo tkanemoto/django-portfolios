@@ -248,11 +248,11 @@
                             </div>
                         </div>
                         <div class="gig-actions">
-                            {% if event.description %}
-                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
-                            {% endif %}
                             {% if event.link %}
                             <a class="btn btn-xs btn-default" href="{{ event.link }}" target="_blank">{{ event.link_text | default:'Link' }}</a>
+                            {% endif %}
+                            {% if event.description %}
+                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
                             {% endif %}
                         </div>
                         {% if event.description %}
@@ -301,11 +301,11 @@
                             </div>
                         </div>
                         <div class="gig-actions">
-                            {% if event.description %}
-                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
-                            {% endif %}
                             {% if event.link %}
                             <a class="btn btn-xs btn-default" href="{{ event.link }}" target="_blank">{{ event.link_text | default:'Link' }}</a>
+                            {% endif %}
+                            {% if event.description %}
+                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
                             {% endif %}
                         </div>
                         {% if event.description %}
