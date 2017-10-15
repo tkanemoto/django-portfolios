@@ -16,9 +16,8 @@ COMPRESSED_TYPES = ['image/jpeg']
 
 class CompressImageUploadHandler(MemoryFileUploadHandler):
     def file_complete(self, file_size):
-        print('content_type : ' + self.content_type)
-        self.file.seek(0)
         if not self.content_type is None and self.content_type in COMPRESSED_TYPES:
+            self.file.seek(0)
             newfile = StringIO()
             img = Image.open(self.file)
             img.save(newfile, 'JPEG', quality=JPEG_QUALITY)
