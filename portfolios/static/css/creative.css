@@ -218,11 +218,13 @@ header.masthead {
       header.masthead .video-controls .btn .fa {
         border-radius: 100% !important;
         border: 2px solid white;
-        width: 50px;
-        height: 50px;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
         letter-spacing: normal;
-        padding: 7px 0 7px 9px;
+        padding: 4px 0 4px 5px;
         text-align: left;
+        vertical-align: middle;
       }
       header.masthead .video-controls .btn:hover {
         color: rgba(255, 255, 255, 0.5) !important;
@@ -251,7 +253,13 @@ header.masthead {
         line-height: 5rem; }
       header.masthead .masthead-subtitle {
         font-size: 2rem;
-        line-height: 2rem; } }
+        line-height: 2rem; }
+      header.masthead .video-controls .btn .fa {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        padding: 7px 0 7px 9px; }
+  }
 
 header.video {
   background: transparent; }
