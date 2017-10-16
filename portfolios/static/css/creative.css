@@ -221,7 +221,8 @@ header.masthead {
         width: 50px;
         height: 50px;
         letter-spacing: normal;
-        padding: 6px 0;
+        padding: 7px 0 7px 9px;
+        text-align: left;
       }
       header.masthead .video-controls .btn:hover {
         color: rgba(255, 255, 255, 0.5) !important;
@@ -231,7 +232,7 @@ header.masthead {
           border-color: rgba(255, 255, 255, 0.5);
         }
       header.masthead .video-controls .btn .desc {
-        font-size: 16px;
+        font-size: 13px;
         display: inline-block;
         vertical-align: middle;
         width: 100px;

@@ -140,8 +140,8 @@ function toggleMuted() {
     var v = $('header.video').data('vide').getVideoObject();
     v.muted = !v.muted;
     if (v.muted) {
-        $('.audio-toggle .fa').removeClass('fa-volume-up').addClass('fa-volume-off').next().text('Sound off');
+        $('.audio-toggle .fa').removeClass('fa-volume-up').addClass('fa-volume-off').next().text('Turn sound on');
     } else {
-        $('.audio-toggle .fa').removeClass('fa-volume-off').addClass('fa-volume-up').next().text('Sound on');
+        $('.audio-toggle .fa').removeClass('fa-volume-off').addClass('fa-volume-up').next().text('Turn sound off');
     }
 }
