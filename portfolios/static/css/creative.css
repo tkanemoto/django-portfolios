@@ -217,12 +217,12 @@ header.masthead {
     }
       header.masthead .video-controls .btn .fa {
         border-radius: 100% !important;
-        border: 2px solid white;
-        width: 30px;
-        height: 30px;
+        border: 1px solid white;
+        width: 25px;
+        height: 25px;
         font-size: 16px;
         letter-spacing: normal;
-        padding: 4px 0 4px 5px;
+        padding: 3px 0 3px 4px;
         text-align: left;
         vertical-align: middle;
       }
@@ -255,6 +255,7 @@ header.masthead {
         font-size: 2rem;
         line-height: 2rem; }
       header.masthead .video-controls .btn .fa {
+        border: 2px solid white;
         width: 50px;
         height: 50px;
         font-size: 30px;
