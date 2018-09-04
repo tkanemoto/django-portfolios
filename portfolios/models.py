@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import os.path
+import datetime
+import requests
+
 from django.db import models
 from django.utils import timezone
 
@@ -65,6 +69,7 @@ class Page(models.Model):
     template = models.CharField('template', max_length=20, choices=TEMPLATES)
     domain = models.CharField(max_length=40)
     favicon = models.ImageField(null=True, blank=True, upload_to=get_upload_path)
+    instagram_access_token = models.CharField(max_length=200, null=True, blank=True)
 
     def __unicode__(self):
         return '{} {}'.format(self.title, self.description if self.description is not None else '')
@@ -98,6 +103,31 @@ class Page(models.Model):
                 return m.group(1)
         return ''
 
+    def get_instagram_posts(self):
+        qs = self.socialmedialink_set.all().filter(kind='instagram')
+        if qs.exists():
+            self.embeddedcontent_set.all().filter(content__contains='instagram-media').delete()
+            self.post_set.all().filter(embedded_content__contains='instagram-media').delete()
+            account = os.path.basename(qs[0].url.rstrip('/'))
+            r = requests.get('https://api.instagram.com/v1/users/self/media/recent/?access_token={}&count=5'.format(self.instagram_access_token))
+            if r.status_code == 200 and r.headers['content-type'].startswith('application/json'):
+                for post in r.json()['data']:
+                    link = post['link']
+                    ctime = datetime.datetime.fromtimestamp(int(post['created_time']))
+                    text = post['caption']['text'] if post['caption'] else ''
+                    text += '<ul class="list-inline">'
+                    text += '<li class="list-inline-item"><a href="{}" target="_blank"><i class="fa fa-fw fa-heart"></i> {}</a></li>'.format(link, str(post['likes']['count']))
+                    text += '<li class="list-inline-item"><a href="{}" target="_blank"><i class="fa fa-fw fa-comment"></i> {}</a></li>'.format(link, str(post['comments']['count']))
+                    text += '</ul>'
+                    r2 = requests.get('https://api.instagram.com/oembed/?url={}&omitscript=1&hidecaption=1'.format(link))
+                    if r2.status_code == 200 and r2.headers['content-type'].startswith('application/json'):
+                        Post.objects.get_or_create(title='', text=text, date=ctime, link=link, embedded_content=r2.json()['html'], page=self)
+        return self.post_set.all().filter(embedded_content__contains='instagram-media')
+
+    def get_posts(self):
+        self.get_instagram_posts()
+        return self.post_set.all()
+
     def upcoming_events(self):
         qs = self.event_set.all()
         if qs.exists():
@@ -113,7 +143,7 @@ class Page(models.Model):
 
 
 class EmbeddedContent(OrderedModel):
-    content = models.TextField(max_length=1000, help_text='Paste in the embedded content from SoundCloud / YouTube etc.')
+    content = models.TextField(max_length=4000, help_text='Paste in the embedded content from SoundCloud / YouTube etc.')
     page = models.ForeignKey('Page')
     order_with_respect_to = 'page'
 
@@ -222,6 +252,7 @@ class SocialMediaLink(OrderedModel):
         ('itunes', 'iTunes'),
         ('lastfm', 'LastFM'),
         ('tumblr', 'Tumblr'),
+        ('instagram', 'Instagram'),
     )
     kind = models.CharField('kind', max_length=20, choices=SERVICES)
     url = models.URLField('URL')
@@ -238,7 +269,7 @@ class Post(models.Model):
     link = models.URLField('link', blank=True, null=True)
     link_text = models.CharField('link text', max_length=20, blank=True, null=True)
     image = models.ImageField(null=True, blank=True, upload_to=get_upload_path)
-    embedded_content = models.CharField(max_length=400, null=True, blank=True)
+    embedded_content = models.CharField(max_length=4000, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True, editable=False)
     page = models.ForeignKey('Page')
 

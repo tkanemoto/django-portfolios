@@ -225,27 +225,27 @@
         <div class="text-center wow fadeIn">
             <h2>News</h2>
             <hr class="colored">
-            <p class="mb-0">Here's what I'm up to at the moment.</p>
+            <p class="mb-0">Here are some recent news posts.</p>
         </div>
         <div class="row">
             <div class="posts col-lg-10 offset-lg-1 mt-4">
-                {% for post in object.post_set.all %}
+                {% for post in object.get_posts %}
                 <div class="post-item media pb-3 mb-3 row">
 
                     {% if post.embedded_content %}
-                    <div class="embed-responsive embed-responsive-16by9 d-flex mr-3 mb-3 media-item col-sm-3">
+                    <div class="embed-responsive embed-responsive-1by1 d-flex mr-3 mb-3 media-item col-sm-6">
                         {{ post.embedded_content | safe }}
                     </div>
                     {% elif post.image %}
-                    <img class="img-fluid d-flex mr-3 mb-3 media-item col-sm-3" src="{{ post.image.url }}" alt="">
+                    <img class="img-fluid d-flex mr-3 mb-3 media-item col-sm-6" src="{{ post.image.url }}" alt="">
                     {% else %}
                     <div class="d-flex mr-3 mb-3 media-item col-sm-3"></div>
                     {% endif %}
 
-                    <div class="media-body col-sm-9">
+                    <div class="media-body col-sm-6">
                         <h5 class="post-title mt-0">{{ post.title }}</h5>
-                        <div class="post-text">{{ post.text | safe }}</div>
-                        <div class="post-date">Posted on <time>{{ post.date }}</time></div>
+                        <div class="post-date mt-2">Posted on <time>{{ post.date }}</time></div>
+                        <div class="post-text mt-2">{{ post.text | safe }}</div>
                     </div>
                 </div>
                 {% endfor %}
@@ -517,6 +517,8 @@
 <script src="{% static 'js/creative.js' %}"></script>
 <script src="{% static 'js/creative-mixitup.js' %}"></script>
 {% endcompress %}
+
+<script async defer src="//www.instagram.com/embed.js"></script>
 
 </body>
 

@@ -1015,10 +1015,11 @@ a.text-primary {
   .news .post-item .post-date {
     font-size: 12px;
     color: #ffe1d8; }
-  @media (min-width: 768px) {
-    .news .post-item .post-date {
-      position: absolute;
-      top: 0;
-      right: 0; } }
   .news .post-item .post-text {
     white-space: pre-wrap; }
+  .news .post-item .list-inline {
+    margin-top: 1em; }
+    .news .post-item .list-inline > li > a {
+      color: rgba(255, 255, 255, 0.7); margin: 0 .3em; }
+    .news .post-item .list-inline > li > a:hover {
+      color: rgba(255, 255, 255, 1.0); }
