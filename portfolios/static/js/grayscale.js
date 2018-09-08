@@ -20,10 +20,10 @@ function doTheSlidieSlide() {
     slidies.each(function(index, element) {
         var $this = $(element)
         //$this.css({'backgroundPositionY': Math.min(-($this.offset().top - top) * 0.172, 600) + 'px'});
-        $this.find('div').css({
+        $this.find('.slidie-slide-image').css({
             'transform': 'translate3d(0px, ' + (-($this.parent().offset().top - top) * 0.5) + 'px, 0px)',
             'top': 'auto',
-            'height': $(window).height() + 'px'
+            'height': $this.parent().height() + 'px'
         });
     });
 }
