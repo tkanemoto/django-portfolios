@@ -103,6 +103,24 @@ class Page(models.Model):
                 return m.group(1)
         return ''
 
+    def get_soundcloud_contents(self):
+        return self.get_embeddedcontent_by_text('soundcloud.com/player')
+
+    def get_bandcamp_contents(self):
+        return self.get_embeddedcontent_by_text('bandcamp.com')
+
+    def get_youtube_contents(self):
+        return self.get_embeddedcontent_by_text('youtube')
+
+    def get_audio_contents(self):
+        return self.get_soundcloud_contents() | self.get_bandcamp_contents()
+
+    def get_video_contents(self):
+        return self.get_youtube_contents()
+
+    def get_embeddedcontent_by_text(self, text):
+        return self.embeddedcontent_set.all().filter(content__contains=text)
+
     def get_instagram_posts(self):
         qs = self.socialmedialink_set.all().filter(kind='instagram')
         if qs.exists():

@@ -35,12 +35,14 @@ $('.navbar-collapse ul li a').click(function() {
 });
 
 $(function() {
-    var controller = new YTV('youtube-playlist', {
-       //user: 'taperunsout',
-       accent: '#337ab7',
-       responsive: true,
-       playlist: $('#youtube-playlist').data('playlist')
-    });
+    if ($('#youtube-playlist').length) {
+        var controller = new YTV('youtube-playlist', {
+           //user: 'taperunsout',
+           accent: '#337ab7',
+           responsive: true,
+           playlist: $('#youtube-playlist').data('playlist')
+        });
+    }
 });
 /*
 $(function(){
