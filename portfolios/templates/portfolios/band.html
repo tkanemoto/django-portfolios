@@ -85,7 +85,7 @@
     </nav>
 
     <!-- Intro Header -->
-    <header class="intro slidie-slide" {% if object.about_background %}style="background-image: url('{{ object.about_background.url }}')"{% endif %}>
+    <header class="intro">
         <div class="intro-body">
             <div class="container">
                 <div class="row">
@@ -144,6 +144,9 @@
                 </div><!--//container-->
             </div><!--//updates-block-->
         </div>
+        <div class="slidie-slide">
+            <div class="slidie-slide-image" {% if object.about_background %}style="background-image: url('{{ object.about_background.url }}')"{% endif %}></div>
+        </div>
     </header>
 
     <!-- About Section -->
@@ -181,7 +184,7 @@
     </section>
 
     <!-- Media Section -->
-    <section id="media" class="media-section content-section text-center slidie-slide" {% if object.media_background %}style="background-image: url('{{ object.media_background.url }}')"{% endif %}>
+    <section id="media" class="media-section content-section text-center">
         <h2>Media</h2>
 
         <div class="container">
@@ -218,126 +221,130 @@
                 </div>
             </div>
         </div>
+        <div class="slidie-slide">
+            <div class="slidie-slide-image" {% if object.media_background %}style="background-image: url('{{ object.media_background.url }}')"{% endif %}></div>
+        </div>
     </section>
 
     <!-- Gigs Section -->
 
-    <section id="events" class="gigs-section content-section container">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <h2 class="section-title text-center">Upcoming Events</h2>
-            <div class="gigs-container">
-                {% for event in object.upcoming_events %}
-                <div class="item">
-                    <div class="date-label">
-                        {% if event.date %}
-                        <div class="number">{{ event.date | date:'j' }}</div>
-                        <div class="month">{{ event.date | date:'b' }}</div>
-                        <div class="year">{{ event.date.year }}</div>
-                        {% else %}
-                        <div class="number">TBC</div>
-                        {% endif %}
-                    </div>
-                    <div class="gig-info">
-                        <div class="info-content">
-                            <h3 class="gig-title">{{ event.name }}</h3>
-                            <div class="meta">
-                                <ul class="meta-list list-inline">
-                                    <li class="location">
-                                        <i class="fa fa-map-marker"></i>{% if event.map_link %}<a href="{{ event.map_link }}">{{ event.location }}</a>{% else %}{{ event.location }}{% endif %}
-                                    </li>
-                                    {% if event.date %}
-                                    <li class="time">
-                                        <i class="fa fa-clock-o"></i>{% if event.time %}{{ event.time | date:'P' }}, {% endif %}{{ event.date | date:'l' }}
-                                    </li>
-                                    {% endif %}
-                                </ul>
+    <section id="events" class="gigs-section content-section">
+        <div class="container">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 class="section-title text-center">Upcoming Events</h2>
+                <div class="gigs-container">
+                    {% for event in object.upcoming_events %}
+                    <div class="item">
+                        <div class="date-label">
+                            {% if event.date %}
+                            <div class="number">{{ event.date | date:'j' }}</div>
+                            <div class="month">{{ event.date | date:'b' }}</div>
+                            <div class="year">{{ event.date.year }}</div>
+                            {% else %}
+                            <div class="number">TBC</div>
+                            {% endif %}
+                        </div>
+                        <div class="gig-info">
+                            <div class="info-content">
+                                <h3 class="gig-title">{{ event.name }}</h3>
+                                <div class="meta">
+                                    <ul class="meta-list list-inline">
+                                        <li class="location">
+                                            <i class="fa fa-map-marker"></i>{% if event.map_link %}<a href="{{ event.map_link }}">{{ event.location }}</a>{% else %}{{ event.location }}{% endif %}
+                                        </li>
+                                        {% if event.date %}
+                                        <li class="time">
+                                            <i class="fa fa-clock-o"></i>{% if event.time %}{{ event.time | date:'P' }}, {% endif %}{{ event.date | date:'l' }}
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="gig-actions">
-                            {% if event.link %}
-                            <a class="btn btn-xs btn-default" href="{{ event.link }}" target="_blank">{{ event.link_text | default:'Link' }}</a>
-                            {% endif %}
+                            <div class="gig-actions">
+                                {% if event.link %}
+                                <a class="btn btn-xs btn-default" href="{{ event.link }}" target="_blank">{{ event.link_text | default:'Link' }}</a>
+                                {% endif %}
+                                {% if event.description %}
+                                <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
+                                {% endif %}
+                            </div>
                             {% if event.description %}
-                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
+                            <div id="info-extra-{{ event.id }}" class="collapse info-extra">
+                                {{ event.description | safe }}
+                            </div>
                             {% endif %}
                         </div>
-                        {% if event.description %}
-                        <div id="info-extra-{{ event.id }}" class="collapse info-extra">
-                            {{ event.description | safe }}
-                        </div>
-                        {% endif %}
                     </div>
-                </div>
-                {% endfor %}
-            </div><!--//gigs-container-->
+                    {% endfor %}
+                </div><!--//gigs-container-->
 
-            <h2 class="section-title text-center">Past Events</h2>
-            <div class="gigs-container">
-                {% for event in object.past_events %}
-                {% if forloop.counter == 10 %}
-                <p class="text-center h3">
-                    <a class="btn btn-xl btn-default" data-toggle="collapse" href="#more-past-events" aria-expanded="false" aria-controls="info-extra-1" >More past events <i class="fa fa-angle-double-down animated"></i></a>
-                </p>
-                <div id="more-past-events" class="collapse">
-                {% endif %}
-                <div class="item">
-                    <div class="date-label">
-                        {% if event.date %}
-                        <div class="number">{{ event.date | date:'j' }}</div>
-                        <div class="month">{{ event.date | date:'b' }}</div>
-                        <div class="year">{{ event.date.year }}</div>
-                        {% else %}
-                        <div class="number">TBC</div>
-                        {% endif %}
-                    </div>
-                    <div class="gig-info">
-                        <div class="info-content">
-                            <h3 class="gig-title">{{ event.name }}</h3>
-                            <div class="meta">
-                                <ul class="meta-list list-inline">
-                                    <li class="location">
-                                        <i class="fa fa-map-marker"></i>{% if event.map_link %}<a href="{{ event.map_link }}">{{ event.location }}</a>{% else %}{{ event.location }}{% endif %}
-                                    </li>
-                                    {% if event.date %}
-                                    <li class="time">
-                                        <i class="fa fa-clock-o"></i>{% if event.time %}{{ event.time | date:'P' }}, {% endif %}{{ event.date | date:'l' }}
-                                    </li>
-                                    {% endif %}
-                                </ul>
+                <h2 class="section-title text-center">Past Events</h2>
+                <div class="gigs-container">
+                    {% for event in object.past_events %}
+                    {% if forloop.counter == 10 %}
+                    <p class="text-center h3">
+                        <a class="btn btn-xl btn-default" data-toggle="collapse" href="#more-past-events" aria-expanded="false" aria-controls="info-extra-1" >More past events <i class="fa fa-angle-double-down animated"></i></a>
+                    </p>
+                    <div id="more-past-events" class="collapse">
+                    {% endif %}
+                    <div class="item">
+                        <div class="date-label">
+                            {% if event.date %}
+                            <div class="number">{{ event.date | date:'j' }}</div>
+                            <div class="month">{{ event.date | date:'b' }}</div>
+                            <div class="year">{{ event.date.year }}</div>
+                            {% else %}
+                            <div class="number">TBC</div>
+                            {% endif %}
+                        </div>
+                        <div class="gig-info">
+                            <div class="info-content">
+                                <h3 class="gig-title">{{ event.name }}</h3>
+                                <div class="meta">
+                                    <ul class="meta-list list-inline">
+                                        <li class="location">
+                                            <i class="fa fa-map-marker"></i>{% if event.map_link %}<a href="{{ event.map_link }}">{{ event.location }}</a>{% else %}{{ event.location }}{% endif %}
+                                        </li>
+                                        {% if event.date %}
+                                        <li class="time">
+                                            <i class="fa fa-clock-o"></i>{% if event.time %}{{ event.time | date:'P' }}, {% endif %}{{ event.date | date:'l' }}
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="gig-actions">
-                            {% if event.link %}
-                            <a class="btn btn-xs btn-default" href="{{ event.link }}" target="_blank">{{ event.link_text | default:'Link' }}</a>
-                            {% endif %}
+                            <div class="gig-actions">
+                                {% if event.link %}
+                                <a class="btn btn-xs btn-default" href="{{ event.link }}" target="_blank">{{ event.link_text | default:'Link' }}</a>
+                                {% endif %}
+                                {% if event.description %}
+                                <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
+                                {% endif %}
+                            </div>
                             {% if event.description %}
-                            <a class="btn btn-xs btn-default" data-toggle="collapse" href="#info-extra-{{ event.id }}" aria-expanded="false" aria-controls="info-extra-{{ event.id }}" >More info</a>
+                            <div id="info-extra-{{ event.id }}" class="collapse info-extra">
+                                {{ event.description | safe }}
+                            </div>
                             {% endif %}
                         </div>
-                        {% if event.description %}
-                        <div id="info-extra-{{ event.id }}" class="collapse info-extra">
-                            {{ event.description | safe }}
-                        </div>
-                        {% endif %}
                     </div>
+                    {% endfor %}
+                    {% if object.past_events.count > 20 %}
+                    </div>
+                    {% endif %}
                 </div>
-                {% endfor %}
-                {% if object.past_events.count > 20 %}
-                </div>
-                {% endif %}
+
+                <div class="gigs-contact text-center">
+                    <!--
+                    <h4 class="title">Want to book us?</h4>
+                    <p class="center-block"></p>
+                    <a class="btn btn-ghost-primary scrollto" href="#follow">Get in touch</a>
+                    -->
+                    {% if object.testimonial_set.all.count > 3 %}{% with object.testimonial_set.all.3 as testimonial %}
+                    <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
+                    {% endwith %}{% endif %}
+                </div><!--//gigs-->
             </div>
-
-            <div class="gigs-contact text-center">
-                <!--
-                <h4 class="title">Want to book us?</h4>
-                <p class="center-block"></p>
-                <a class="btn btn-ghost-primary scrollto" href="#follow">Get in touch</a>
-                -->
-                {% if object.testimonial_set.all.count > 3 %}{% with object.testimonial_set.all.3 as testimonial %}
-                <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
-                {% endwith %}{% endif %}
-            </div><!--//gigs-->
-
         </div><!--//container-->
     </section><!--//gigs-section-->
 

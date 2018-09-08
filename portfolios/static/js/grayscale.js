@@ -13,8 +13,24 @@ function collapseNavbar() {
     }
 }
 
+function doTheSlidieSlide() {
+    var slidies = $(".slidie-slide");
+    var $body = $('body');
+    var top = document.scrollingElement.scrollTop; //$body.scrollTop();
+    slidies.each(function(index, element) {
+        var $this = $(element)
+        //$this.css({'backgroundPositionY': Math.min(-($this.offset().top - top) * 0.172, 600) + 'px'});
+        $this.find('div').css({
+            'transform': 'translate3d(0px, ' + (-($this.parent().offset().top - top) * 0.5) + 'px, 0px)',
+            'top': 'auto',
+            'height': $(window).height() + 'px'
+        });
+    });
+}
+
 $(window).scroll(collapseNavbar);
 $(document).ready(collapseNavbar);
+$(document).scroll(doTheSlidieSlide);
 
 // jQuery for page scrolling feature - requires jQuery Easing plugin
 $(function() {
@@ -43,17 +59,5 @@ $(function() {
            playlist: $('#youtube-playlist').data('playlist')
         });
     }
+    doTheSlidieSlide();
 });
-/*
-$(function(){
-    var slidies = $(".slidie-slide");
-    var $body = $('body');
-    $(document).scroll(function(){
-        var top = $body.scrollTop();
-        slidies.each(function(index, element) {
-            var $this = $(element)
-            $this.css({'backgroundPositionY': Math.min(-($this.offset().top - top) * 0.172, 600) + 'px'});
-        });
-    });
-})
-*/
