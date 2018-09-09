@@ -32,6 +32,9 @@
 
     <!-- Custom Fonts -->
     <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/owl-carousel/owl.theme.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/owl-carousel/owl.transitions.css' %}" rel="stylesheet" type="text/css">
     {% endcompress %}
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800,300italic" rel="stylesheet" type="text/css">
@@ -185,42 +188,48 @@
 
     <!-- Media Section -->
     <section id="media" class="media-section content-section text-center">
-        <h2>Media</h2>
-
+        <h2 class="section-title text-center">Videos</h2>
         <div class="container">
-            <div class="col-md-8 col-md-offset-2">
-                {% if object.get_video_contents or object.youtube_playlist %}
-                <div class="panel panel-transparent clearfix">
-                    <div class="panel-heading panel-body"><h3 class="panel-title">Videos</h3></div>
-                    <div class="panel-body">
-                        {% if object.youtube_playlist %}
-                            <div id="youtube-playlist" data-playlist="{{ object.youtube_playlist }}"></div>
-                        {% endif %}
-                        {% for content in object.get_video_contents %}
-                            {{ content.content | safe }}
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    {% if object.youtube_playlist %}
+                        <div id="youtube-playlist" data-playlist="{{ object.youtube_playlist }}"></div>
+                    {% endif %}
+                    {% for content in object.get_video_contents %}
+                        {{ content.content | safe }}
+                    {% endfor %}
 
-                {% if object.get_audio_contents %}
-                <div class="panel panel-transparent">
-                    <div class="panel-heading panel-body"><h3 class="panel-title">Albums</h3></div>
-                    <div class="panel-body">
-                        {% for content in object.get_audio_contents %}
-                            {{ content.content | safe }}
-                        {% endfor %}
+                    {% if object.get_audio_contentss %}
+                    <div class="panel panel-transparent">
+                        <div class="panel-heading panel-body"><h3 class="panel-title">Albums</h3></div>
+                        <div class="panel-body">
+                            {% for content in object.get_audio_contents %}
+                                {{ content.content | safe }}
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-                {% endif %}
-
-                <div class="section-title text-center">
-                    {% if object.testimonial_set.all.count > 2 %}{% with object.testimonial_set.all.2 as testimonial %}
-                    <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
-                    {% endwith %}{% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>
+
+        <h2 class="section-title text-center">Albums</h2>
+        <div class="container">
+            <div class="row">
+                {% for content in object.get_audio_contents %}
+                    <div class="album col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                        {{ content.content | safe }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="section-title text-center">
+            {% if object.testimonial_set.all.count > 2 %}{% with object.testimonial_set.all.2 as testimonial %}
+            <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
+            {% endwith %}{% endif %}
+        </div>
+
         <div class="slidie-slide">
             <div class="slidie-slide-image" {% if object.media_background %}style="background-image: url('{{ object.media_background.url }}')"{% endif %}></div>
         </div>
@@ -437,6 +446,9 @@
 
 <!-- Youtube TV -->
 <script src="{% static 'vendor/ytv/ytv.js' %}"></script>
+
+<!-- OWL Carousel -->
+<script src="{% static 'vendor/owl-carousel/owl.carousel.js' %}"></script>
 
 <!-- Custom Theme JavaScript -->
 <script src="{% static 'js/grayscale.js' %}"></script>

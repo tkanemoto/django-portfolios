@@ -104,13 +104,13 @@ class Page(models.Model):
         return ''
 
     def get_soundcloud_contents(self):
-        return self.get_embeddedcontent_by_text('soundcloud.com/player')
+        return self.get_embeddedcontent_by_kind('soundcloud')
 
     def get_bandcamp_contents(self):
-        return self.get_embeddedcontent_by_text('bandcamp.com')
+        return self.get_embeddedcontent_by_kind('bandcamp')
 
     def get_youtube_contents(self):
-        return self.get_embeddedcontent_by_text('youtube')
+        return self.get_embeddedcontent_by_kind('youtube')
 
     def get_audio_contents(self):
         return self.get_soundcloud_contents() | self.get_bandcamp_contents()
@@ -118,8 +118,8 @@ class Page(models.Model):
     def get_video_contents(self):
         return self.get_youtube_contents()
 
-    def get_embeddedcontent_by_text(self, text):
-        return self.embeddedcontent_set.all().filter(content__contains=text)
+    def get_embeddedcontent_by_kind(self, kind):
+        return self.embeddedcontent_set.all().filter(kind=kind)
 
     def get_instagram_posts(self):
         qs = self.socialmedialink_set.all().filter(kind='instagram')
@@ -162,15 +162,37 @@ class Page(models.Model):
 
 class EmbeddedContent(OrderedModel):
     content = models.TextField(max_length=4000, help_text='Paste in the embedded content from SoundCloud / YouTube etc.')
+    SERVICES = (
+        ('soundcloud', 'SoundCloud'),
+        ('spotify', 'Spotify'),
+        ('youtube', 'YouTube'),
+        ('bandcamp', 'BandCamp'),
+        ('vevo', 'Vevo'),
+        ('itunes', 'iTunes'),
+        ('lastfm', 'LastFM'),
+        ('tumblr', 'Tumblr'),
+        ('instagram', 'Instagram'),
+    )
+    kind = models.CharField('kind', max_length=20, choices=SERVICES, default='embedded')
+    thumbnail = models.ImageField('thumbnail', blank=True, null=True, upload_to=get_upload_path)
     page = models.ForeignKey('Page')
     order_with_respect_to = 'page'
 
     def __unicode__(self):
+        return '{} content'.format(self.kind)
+
+    def save(self, *args, **kwargs):
         if 'soundcloud.com/player' in self.content:
-            return 'SoundCloud track'
-        if 'bandcamp.com' in self.content:
-            return 'BandCamp album'
-        return 'Embedded content'
+            self.kind = 'soundcloud'
+        elif 'bandcamp.com' in self.content:
+            self.kind = 'bandcamp'
+        elif 'youtube' in self.content:
+            self.kind = 'youtube'
+        elif 'spotify' in self.content:
+            self.kind = 'spotify'
+        elif 'itunes' in self.content:
+            self.kind = 'itunes'
+        super(EmbeddedContent, self).save(*args, **kwargs)
 
 
 class Client(OrderedModel):
