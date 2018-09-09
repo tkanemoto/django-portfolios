@@ -161,7 +161,8 @@
                 <p>{{ object.about | safe }}</p>
 
                 {% if object.testimonial_set.all.count > 1 %}{% with object.testimonial_set.all.1 as testimonial %}
-                <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
+                <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
+                <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
                 {% endwith %}{% endif %}
             </div>
         </div>
@@ -227,7 +228,8 @@
 
         <div class="section-title text-center">
             {% if object.testimonial_set.all.count > 2 %}{% with object.testimonial_set.all.2 as testimonial %}
-            <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
+            <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
+            <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
             {% endwith %}{% endif %}
         </div>
 
@@ -351,7 +353,8 @@
                     <a class="btn btn-ghost-primary scrollto" href="#follow">Get in touch</a>
                     -->
                     {% if object.testimonial_set.all.count > 3 %}{% with object.testimonial_set.all.3 as testimonial %}
-                    <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
+                    <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
+                    <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
                     {% endwith %}{% endif %}
                 </div><!--//gigs-->
             </div>
@@ -419,7 +422,8 @@
             </div><!--//social-media-block-->
             <div class="col-md-8 col-md-offset-2">
                 {% if object.testimonial_set.all.count > 4 %}{% with object.testimonial_set.all.4 as testimonial %}
-                <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
+                <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
+                <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
                 {% endwith %}{% endif %}
             </div>
         </div>
