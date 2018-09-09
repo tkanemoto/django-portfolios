@@ -160,10 +160,12 @@
             <div class="col-md-8 col-md-offset-2">
                 <p>{{ object.about | safe }}</p>
 
-                {% if object.testimonial_set.all.count > 1 %}{% with object.testimonial_set.all.1 as testimonial %}
-                <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
-                <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
-                {% endwith %}{% endif %}
+                <div class="testimonial">
+                    {% if object.testimonial_set.all.count > 1 %}{% with object.testimonial_set.all.1 as testimonial %}
+                    <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
+                    <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
+                    {% endwith %}{% endif %}
+                </div>
             </div>
         </div>
 
@@ -226,7 +228,7 @@
             </div>
         </div>
 
-        <div class="section-title text-center">
+        <div class="section-title text-center testimonial">
             {% if object.testimonial_set.all.count > 2 %}{% with object.testimonial_set.all.2 as testimonial %}
             <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
             <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
@@ -346,7 +348,7 @@
                     {% endif %}
                 </div>
 
-                <div class="gigs-contact text-center">
+                <div class="gigs-contact text-center testimonial">
                     <!--
                     <h4 class="title">Want to book us?</h4>
                     <p class="center-block"></p>
@@ -420,7 +422,7 @@
                     {% endfor %}
                 </ul>
             </div><!--//social-media-block-->
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8 col-md-offset-2 testimonial">
                 {% if object.testimonial_set.all.count > 4 %}{% with object.testimonial_set.all.4 as testimonial %}
                 <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
                 <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
