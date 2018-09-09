@@ -546,6 +546,7 @@
   -o-background-size: cover;
   background-size: cover;
   background-attachment: scroll;
+  background-position: center center;
   position: absolute;
   bottom: 0;
   left: 0;
