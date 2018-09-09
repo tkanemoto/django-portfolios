@@ -53,6 +53,7 @@ class Page(models.Model):
     quote_citation = models.CharField('quote citation', max_length=20, null=True, blank=True, help_text='Some profound person')
     quote_background = models.ImageField(blank=True, null=True, upload_to=get_upload_path)
     news_text = models.TextField('news section text', max_length=200, null=True, blank=True)
+    number_of_featured_posts = models.IntegerField('number of featured news posts', default=5, help_text='Select the number of news posts you would like to be listed in the news section.')
     clients = models.ManyToManyField('Client', blank=True, help_text='Select the clients you would like to be listed in the Credits section')
     number_of_featured_clients = models.IntegerField('number of featured clients', default=5, help_text='The number of clients to show in the big carousel')
     media_background = models.ImageField('media section background image', blank=True, null=True, upload_to=get_upload_path)
@@ -144,7 +145,7 @@ class Page(models.Model):
 
     def get_posts(self):
         self.get_instagram_posts()
-        return self.post_set.all()
+        return self.post_set.all()[:self.number_of_featured_posts]
 
     def upcoming_events(self):
         qs = self.event_set.all()

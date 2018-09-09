@@ -112,7 +112,7 @@
                     <div id="carousel-updates" class="carousel slide" data-ride="carousel" data-interval="6000">
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner" role="listbox">
-                            {% for post in object.post_set.all %}
+                            {% for post in object.get_posts %}
                             <div class="item {{ forloop.first|yesno:'active,' }}">
                                 <div class="media-holder">
                                     <div class="media-thumb">
