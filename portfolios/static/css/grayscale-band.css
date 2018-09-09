@@ -568,6 +568,21 @@
   .media-section .slidie-slide > .slidie-slide-image {
     background-image: url(../img/media-bg.jpg); }
 
+.testimonial .lead {
+  margin: 15px 0; }
+.testimonial .lead .quotation-mark {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.33);
+  position: relative; }
+  .testimonial .lead .quotation-mark.fa-quote-left {
+    margin: 0 15px 0 0; top: -10px; }
+  .testimonial .lead .quotation-mark.fa-quote-right {
+    margin: 0 0 0 15px; bottom: -10px; }
+  .testimonial .lead + .quote {
+    margin-top: 0; }
+  .testimonial .quote i {
+    color: rgba(255, 255, 255, 0.33); }
+
 /*
   @media (min-width: 1024px) {
     .slidie-slide {

@@ -100,9 +100,10 @@
                     </a>
                 </div>
 
-                <div class="row">
+                <div class="row testimonial">
                     {% if object.testimonial_set.all.count > 0 %}{% with object.testimonial_set.all.0 as testimonial %}
-                    <p class="quote"><em>"{{ testimonial.title }}"</em> {{ testimonial.body | default:'' }} - <small><strong>{{ testimonial.author.name }}</strong></small></p>
+                    <p class="lead"><i class="quotation-mark fa fa-quote-left"></i>{{ testimonial.title }}<i class="quotation-mark fa fa-quote-right"></i></p>
+                    <p class="quote">{{ testimonial.body | default:'' }} <i>&mdash;</i> <small><strong>{{ testimonial.author.name }}</strong></small></p>
                     {% endwith %}{% endif %}
                 </div>
             </div>
