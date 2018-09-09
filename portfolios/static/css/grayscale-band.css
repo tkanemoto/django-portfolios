@@ -10,6 +10,12 @@
   height: 400px;
 }
 
+footer {
+  padding-bottom: 16px;
+}
+
+.content-section { background-color: black; }
+
 .about-section .item-inner {
   padding: 20px 0px;
 }
@@ -420,7 +426,7 @@
   opacity: 1;
 }
 .contact-section .social-media-list {
-  margin-bottom: 100px;
+  margin-bottom: 25px;
 }
 .contact-section .social-media-list a {
   color: rgba(255, 255, 255, 0.4);
@@ -534,8 +540,6 @@
 }
 
 .portfolio-carousel .owl-controls { padding-top: 25px; }
-
-.content-section { background-color: black; }
 
 .slidie-slide {
   position: relative;
