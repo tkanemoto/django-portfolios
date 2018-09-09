@@ -552,7 +552,9 @@
   left: 0;
   width: 100%;
   z-index: -1;
-  will-change: transform; }
+  will-change: transform;
+  opacity: 0.5
+}
 
 .intro {
   background: none!important; }
