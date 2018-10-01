@@ -162,7 +162,7 @@ class Page(models.Model):
 
 
 class EmbeddedContent(OrderedModel):
-    content = models.TextField(max_length=4000, help_text='Paste in the embedded content from SoundCloud / YouTube etc.')
+    content = models.TextField(max_length=16000, help_text='Paste in the embedded content from SoundCloud / YouTube etc.')
     SERVICES = (
         ('soundcloud', 'SoundCloud'),
         ('spotify', 'Spotify'),
@@ -310,7 +310,7 @@ class Post(models.Model):
     link = models.URLField('link', blank=True, null=True)
     link_text = models.CharField('link text', max_length=20, blank=True, null=True)
     image = models.ImageField(null=True, blank=True, upload_to=get_upload_path)
-    embedded_content = models.CharField(max_length=4000, null=True, blank=True)
+    embedded_content = models.CharField(max_length=16000, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True, editable=False)
     page = models.ForeignKey('Page')
 
