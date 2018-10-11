@@ -140,7 +140,10 @@ class Page(models.Model):
                     text += '</ul>'
                     r2 = requests.get('https://api.instagram.com/oembed/?url={}&omitscript=1&hidecaption=1'.format(link))
                     if r2.status_code == 200 and r2.headers['content-type'].startswith('application/json'):
-                        Post.objects.get_or_create(title='', text=text, date=ctime, link=link, embedded_content=r2.json()['html'], page=self)
+                        p, _c = Post.objects.get_or_create(title='', text=text, date=ctime, link=link, embedded_content=r2.json()['html'], page=self)
+                        p.date = ctime
+                        p.save()
+
         return self.post_set.all().filter(embedded_content__contains='instagram-media')
 
     def get_posts(self):

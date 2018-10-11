@@ -1010,10 +1010,11 @@ a.text-primary {
     margin: 0 0 0 15px; bottom: -10px; }
 
 .news .post-item {
+  font-size: 1.1rem;
   position: relative;
   border-bottom: 1px solid #202224; }
   .news .post-item .post-date {
-    font-size: 12px;
+    font-size: .9rem;
     color: #ffe1d8; }
   .news .post-item .post-text {
     white-space: pre-wrap; }
