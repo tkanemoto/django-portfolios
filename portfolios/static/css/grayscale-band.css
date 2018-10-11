@@ -587,6 +587,13 @@ footer {
   .testimonial .quote i {
     color: rgba(255, 255, 255, 0.33); }
 
+.copyright-extra {
+  color: #788191;
+}
+.copyright-extra a {
+  color: #788191;
+}
+
 /*
   @media (min-width: 1024px) {
     .slidie-slide {

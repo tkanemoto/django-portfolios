@@ -434,7 +434,7 @@
         <div class="container text-center">
             <p class="copyright small">Copyright &copy; {{ object.copyright }} {{ object.title }}</p>
             {% if object.extra_copyright_text %}
-            <p class="text-info small">{{ object.extra_copyright_text | safe }}</p>
+            <p class="copyright-extra small">{{ object.extra_copyright_text | safe }}</p>
             {% endif %}
         </div>
     </footer>
