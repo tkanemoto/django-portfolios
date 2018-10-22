@@ -40,7 +40,7 @@ class Page(models.Model):
         ('band', 'Band'),
     )
     slug = models.SlugField('slug')
-    owner = models.ForeignKey('auth.User', null=True)
+    owner = models.ForeignKey('auth.User', null=True, on_delete=models.SET_NULL)
     title = models.CharField('title', max_length=100, null=True, help_text='Title text to display')
     subtitle = models.CharField('subtitle', max_length=200, null=True, help_text='Text to display below the title')
     description = models.CharField('description', max_length=400, null=True, blank=True, help_text='Short description for search engines')
@@ -179,7 +179,7 @@ class EmbeddedContent(OrderedModel):
     )
     kind = models.CharField('kind', max_length=20, choices=SERVICES, default='embedded')
     thumbnail = models.ImageField('thumbnail', blank=True, null=True, upload_to=get_upload_path)
-    page = models.ForeignKey('Page')
+    page = models.ForeignKey('Page', on_delete=models.CASCADE)
     order_with_respect_to = 'page'
 
     def __unicode__(self):
@@ -206,7 +206,7 @@ class Client(OrderedModel):
     mugshot = models.ImageField(null=True, blank=True, upload_to=get_upload_path, help_text='Profile picture')
     showreel_url = models.URLField('showreel URL', blank=True, null=True, help_text='The embedded video URL that best represent the work you\'ve done for this client')
     link = models.URLField(null=True, blank=True, help_text='Link to this client\'s website.')
-    owner = models.ForeignKey('auth.User', blank=True)
+    owner = models.ForeignKey('auth.User', blank=True, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('order',)
@@ -253,7 +253,7 @@ class Role(models.Model):
 
 
 class Project(OrderedModel):
-    client = models.ForeignKey('Client')
+    client = models.ForeignKey('Client', on_delete=models.CASCADE)
     name = models.CharField('name', max_length=100)
     roles = models.ManyToManyField('Role')
     category = models.CharField('category', max_length=30)
@@ -272,10 +272,10 @@ class Project(OrderedModel):
 
 
 class Testimonial(OrderedModel):
-    author = models.ForeignKey('Client')
+    author = models.ForeignKey('Client', on_delete=models.CASCADE)
     title = models.CharField('title', max_length=200)
     body = models.TextField('body', max_length=400, null=True, blank=True)
-    page = models.ForeignKey('Page', null=True)
+    page = models.ForeignKey('Page', null=True, on_delete=models.CASCADE)
     order_with_respect_to = 'page'
 
     def __unicode__(self):
@@ -300,7 +300,7 @@ class SocialMediaLink(OrderedModel):
     )
     kind = models.CharField('kind', max_length=20, choices=SERVICES)
     url = models.URLField('URL')
-    page = models.ForeignKey('Page')
+    page = models.ForeignKey('Page', on_delete=models.CASCADE)
     order_with_respect_to = 'page'
 
     def get_svg_path(self):
@@ -315,7 +315,7 @@ class Post(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to=get_upload_path)
     embedded_content = models.CharField(max_length=16000, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True, editable=False)
-    page = models.ForeignKey('Page')
+    page = models.ForeignKey('Page', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('-date',)
@@ -330,7 +330,7 @@ class Member(OrderedModel):
     roles = models.CharField('roles', max_length=60)
     description = models.TextField('description', blank=True, null=True, max_length=400, help_text='Description or bio')
     mugshot = models.ImageField(null=True, blank=True, upload_to=get_upload_path, help_text='Profile picture')
-    page = models.ForeignKey('Page')
+    page = models.ForeignKey('Page', on_delete=models.CASCADE)
     order_with_respect_to = 'page'
 
     class Meta:
@@ -349,7 +349,7 @@ class Event(models.Model):
     description = models.TextField(max_length=600, null=True, blank=True)
     link = models.URLField(blank=True, null=True)
     link_text = models.CharField(max_length=20, blank=True, null=True)
-    page = models.ForeignKey('Page')
+    page = models.ForeignKey('Page', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('-date',)
