@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from future.utils import python_2_unicode_compatible
 
 import os.path
 import datetime
@@ -34,6 +35,7 @@ def get_upload_path(instance, filename):
     return UPLOAD_FOLDER.format(slug=slug, file=filename)
 
 
+@python_2_unicode_compatible
 class Page(models.Model):
     TEMPLATES = (
         ('composer', 'Composer'),
@@ -72,7 +74,7 @@ class Page(models.Model):
     favicon = models.ImageField(null=True, blank=True, upload_to=get_upload_path)
     instagram_access_token = models.CharField(max_length=200, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} {}'.format(self.title, self.description if self.description is not None else '')
 
     def get_absolute_url(self):
@@ -164,6 +166,7 @@ class Page(models.Model):
         return qs
 
 
+@python_2_unicode_compatible
 class EmbeddedContent(OrderedModel):
     content = models.TextField(max_length=16000, help_text='Paste in the embedded content from SoundCloud / YouTube etc.')
     SERVICES = (
@@ -182,7 +185,7 @@ class EmbeddedContent(OrderedModel):
     page = models.ForeignKey('Page', on_delete=models.CASCADE)
     order_with_respect_to = 'page'
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} content'.format(self.kind)
 
     def save(self, *args, **kwargs):
@@ -199,6 +202,7 @@ class EmbeddedContent(OrderedModel):
         super(EmbeddedContent, self).save(*args, **kwargs)
 
 
+@python_2_unicode_compatible
 class Client(OrderedModel):
     name = models.CharField('name', max_length=100, help_text='Name of the client')
     description = models.CharField('description', max_length=200, help_text='Job title or the type of organisation')
@@ -211,7 +215,7 @@ class Client(OrderedModel):
     class Meta:
         ordering = ('order',)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{}'.format(self.name)
 
     def roles(self):
@@ -244,14 +248,16 @@ class Client(OrderedModel):
         return self._video_url(embed=True)
 
 
+@python_2_unicode_compatible
 class Role(models.Model):
     name = models.CharField('name', max_length=20)
     product = models.CharField('product', max_length=20)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{}'.format(self.name)
 
 
+@python_2_unicode_compatible
 class Project(OrderedModel):
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
     name = models.CharField('name', max_length=100)
@@ -261,7 +267,7 @@ class Project(OrderedModel):
     url = models.URLField('URL', blank=True, null=True, help_text='URL of the embedded video content')
     order_with_respect_to = 'client'
 
-    def __unicode__(self):
+    def __str__(self):
         return '{}'.format(self.name)
 
     def role_names(self):
@@ -271,6 +277,7 @@ class Project(OrderedModel):
         return set(self.roles.all().values_list('product', flat=True))
 
 
+@python_2_unicode_compatible
 class Testimonial(OrderedModel):
     author = models.ForeignKey('Client', on_delete=models.CASCADE)
     title = models.CharField('title', max_length=200)
@@ -278,7 +285,7 @@ class Testimonial(OrderedModel):
     page = models.ForeignKey('Page', null=True, on_delete=models.CASCADE)
     order_with_respect_to = 'page'
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} : {} "{}"'.format(self.author, self.title, self.body)
 
 
@@ -307,6 +314,7 @@ class SocialMediaLink(OrderedModel):
         return 'img/{}.svg'.format(self.kind)
 
 
+@python_2_unicode_compatible
 class Post(models.Model):
     title = models.CharField('title', max_length=200)
     text = models.TextField('text', max_length=1000)
@@ -321,10 +329,11 @@ class Post(models.Model):
         ordering = ('-date',)
         verbose_name = 'news post'
 
-    def __unicode__(self):
+    def __str__(self):
         return '{}'.format(self.title)
 
 
+@python_2_unicode_compatible
 class Member(OrderedModel):
     name = models.CharField('name', max_length=100, help_text='Name of the member')
     roles = models.CharField('roles', max_length=60)
@@ -336,10 +345,11 @@ class Member(OrderedModel):
     class Meta:
         ordering = ('order',)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{}'.format(self.name)
 
 
+@python_2_unicode_compatible
 class Event(models.Model):
     name = models.CharField('event title', max_length=200)
     date = models.DateField(null=True, blank=True)
@@ -354,5 +364,5 @@ class Event(models.Model):
     class Meta:
         ordering = ('-date',)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} - {}'.format(self.name, self.date)
