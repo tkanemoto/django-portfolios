@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from future.utils import python_2_unicode_compatible
 
 import os.path
 import datetime
@@ -8,6 +7,7 @@ import requests
 
 from django.db import models
 from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
 
 from ordered_model.models import OrderedModel
 
