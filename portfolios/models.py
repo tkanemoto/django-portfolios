@@ -88,10 +88,10 @@ class Page(models.Model):
         return self.clients.all().filter(order__gte=self.number_of_featured_clients)
 
     def roles(self):
-        return set(self.clients.all().values_list('project__roles__name', flat=True))
+        return sorted(set(self.clients.all().values_list('project__roles__name', flat=True)))
 
     def products(self):
-        return set(self.clients.all().values_list('project__roles__product', flat=True))
+        return sorted(set(self.clients.all().values_list('project__roles__product', flat=True)))
 
     def copyright(self):
         if self.date_created.year != self.date_modified.year:
@@ -219,10 +219,10 @@ class Client(OrderedModel):
         return '{}'.format(self.name)
 
     def roles(self):
-        return set(self.project_set.all().values_list('roles__name', flat=True))
+        return sorted(set(self.project_set.all().values_list('roles__name', flat=True)))
 
     def products(self):
-        return set(self.project_set.all().values_list('roles__product', flat=True))
+        return sorted(set(self.project_set.all().values_list('roles__product', flat=True)))
 
     def _youtube_url(self, url, embed=False):
         import re
@@ -271,10 +271,10 @@ class Project(OrderedModel):
         return '{}'.format(self.name)
 
     def role_names(self):
-        return set(self.roles.all().values_list('name', flat=True))
+        return sorted(set(self.roles.all().values_list('name', flat=True)))
 
     def products(self):
-        return set(self.roles.all().values_list('product', flat=True))
+        return sorted(set(self.roles.all().values_list('product', flat=True)))
 
 
 @python_2_unicode_compatible
