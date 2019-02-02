@@ -20,7 +20,7 @@ function doTheSlidieSlide() {
     slidies.each(function(index, element) {
         var $this = $(element)
         //$this.css({'backgroundPositionY': Math.min(-($this.offset().top - top) * 0.172, 600) + 'px'});
-        var offset = Math.max(($this.parent().offset().top - top) * 0.1 + 80, -600);
+        var offset = Math.max(($this.parent().offset().top - top) * 0.1, -600);
         $this.find('.slidie-slide-image').css({
             'transform': 'translate3d(0px, ' + offset + 'px, 0px)',
             'top': 'auto',
