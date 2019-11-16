@@ -11,7 +11,7 @@
     <meta name="keywords" content="{{ object.keywords }}">
     <meta name="theme-color" content="#000">
 
-    <title>{{ object.title }} - {{ object.subtitle }}</title>
+    <title>{{ object.title }} - {{ object.description }}</title>
 
     <link rel="canonical" href="https://{{ object.domain }}/">
 
@@ -33,6 +33,8 @@
 
     <!-- Custom Fonts -->
     <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Owl Carousel -->
     <link href="{% static 'vendor/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'vendor/owl-carousel/owl.theme.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'vendor/owl-carousel/owl.transitions.css' %}" rel="stylesheet" type="text/css">
@@ -94,7 +96,7 @@
             <div class="container">
                 <div class="row">
                     <h1 class="brand-heading clearfix"><img class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1" src="{% if object.mugshot %}{{ object.mugshot.url }}{% endif %}" alt="{{ object.title }}"></h1>
-                    <p class="intro-text">{{ object.subtitle }}</p>
+                    <p class="intro-text">{{ object.subtitle | safe }}</p>
 
                     <a href="#about" class="btn btn-circle page-scroll">
                         <i class="fa fa-angle-double-down animated"></i>
